@@ -8,10 +8,16 @@
 import SwiftUI
 import CoreData
 
-struct ContentView: View {
+protocol AnyView where Self: View {
+    var isDarkMode: Bool { get set }
+}
+
+struct ContentView: View, AnyView {
     // MARK: - PROPERTIES
     @State var task: String = ""
     @State private var showNewTaskItem: Bool = false
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+    
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(
@@ -19,40 +25,6 @@ struct ContentView: View {
         animation: .default
     )
     private var items: FetchedResults<Item>
-    
-    // MARK: - Functions
-    private func addItem() {
-        
-        withAnimation  {
-            let newItem = Item(context: viewContext)
-            newItem.timestamp = Date()
-            newItem.task = task
-            newItem.completion = false
-            newItem.id = UUID()
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-            task = ""
-            hideKeyboard()
-        }
-    }
-    
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            offsets.map { items[$0] }.forEach(viewContext.delete)
-            
-            do {
-                try viewContext.save()
-            } catch {
-                let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
-            }
-        }
-    }
     
     // MARK: - BODY
     var body: some View {
@@ -62,6 +34,38 @@ struct ContentView: View {
                 VStack {
                     
                     // MARK: - HEADER
+                    HStack(spacing: 10) {
+                        // MARK: - TITLE
+                        Text("TaskGo")
+                            .font(.system(.largeTitle, design: .rounded))
+                            .fontWeight(.black)
+                            .padding(.leading, 4)
+                        
+                        Spacer()
+                        
+                        // MARK: - EDIT BUTTON
+                        EditButton()
+                            .font(.system(size: 16, weight: .semibold, design: .rounded))
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 5)
+                            .background(
+                                Capsule().stroke(.white, lineWidth: 2)
+                            )
+                        // MARK: - APPEARENCE BUTTON
+                        Button(action: {
+                            withAnimation {
+                                isDarkMode.toggle()
+                            }
+                        }, label: {
+                            Image(systemName: isDarkMode ? "moon.circle.fill" : "moon.circle")
+                                .resizable()
+                                .frame(width: 24, height: 24)
+                                .font(.system(.title,design: .monospaced))
+                        })
+                        
+                    } //:HSTACK
+                    .padding()
+                    .foregroundStyle(.white)
                     Spacer(minLength: 80)
                     
                     // MARK: - NEW TASK BUTTON
@@ -70,10 +74,6 @@ struct ContentView: View {
                             showNewTaskItem = true
                         }
                     }, label: {
-//                        Image(systemName: "plus.circle")
-//                            .font(.system(size: 30, weight: .semibold, design: .rounded))
-//                        Text("New Task")
-//                            .font(.system(size: 24, weight: .bold, design: .rounded))
                         Label(
                             title: {
                                 Text("New Task")
@@ -108,8 +108,6 @@ struct ContentView: View {
                         y: 4
                     )
                     // MARK: - TASKS
-                    
-                    // MARK: - List
                     List {
                         ForEach(items) { item in
                             NavigationLink(destination: Text("Item at \(item.timestamp!, formatter: itemFormatter)")) {
@@ -156,15 +154,45 @@ struct ContentView: View {
             } //: ZStack
             .navigationTitle("Daily Tasks")
             .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    EditButton()
-                }
-            } //: Toolbar
+            .toolbar(.hidden)
             .background(BackgroundImageView())
             .background(backgroundGradient.ignoresSafeArea(.all))
         } //: NavigationView
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    // MARK: - Functions
+    private func addItem() {
+        
+        withAnimation  {
+            let newItem = Item(context: viewContext)
+            newItem.timestamp = Date()
+            newItem.task = task
+            newItem.completion = false
+            newItem.id = UUID()
+            
+            do {
+                try viewContext.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+            task = ""
+            hideKeyboard()
+        }
+    }
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            offsets.map { items[$0] }.forEach(viewContext.delete)
+            
+            do {
+                try viewContext.save()
+            } catch {
+                let nsError = error as NSError
+                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+            }
+        }
     }
     
 }
