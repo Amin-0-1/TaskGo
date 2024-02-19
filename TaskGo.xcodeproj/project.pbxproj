@@ -13,6 +13,8 @@
 		275ACCD42B7EB7BC00E7ACAC /* sound-tap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 275ACCD12B7EB7BC00E7ACAC /* sound-tap.mp3 */; };
 		275ACCD52B7EB7BC00E7ACAC /* sound-ding.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 275ACCD22B7EB7BC00E7ACAC /* sound-ding.mp3 */; };
 		275ACCD62B7EB7BC00E7ACAC /* sound-rise.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 275ACCD32B7EB7BC00E7ACAC /* sound-rise.mp3 */; };
+		27E78FFC2B82C7E200C228F9 /* NewTaskItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E78FFB2B82C7E200C228F9 /* NewTaskItemView.swift */; };
+		27E78FFE2B82D0F700C228F9 /* BlankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E78FFD2B82D0F700C228F9 /* BlankView.swift */; };
 		27EC5CFF2B7EB5FA00A38B8B /* TaskGoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EC5CFE2B7EB5FA00A38B8B /* TaskGoApp.swift */; };
 		27EC5D012B7EB5FA00A38B8B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EC5D002B7EB5FA00A38B8B /* ContentView.swift */; };
 		27EC5D032B7EB5FB00A38B8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27EC5D022B7EB5FB00A38B8B /* Assets.xcassets */; };
@@ -29,6 +31,8 @@
 		275ACCD22B7EB7BC00E7ACAC /* sound-ding.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sound-ding.mp3"; sourceTree = "<group>"; };
 		275ACCD32B7EB7BC00E7ACAC /* sound-rise.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sound-rise.mp3"; sourceTree = "<group>"; };
 		275ACCDD2B7EB8E000E7ACAC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		27E78FFB2B82C7E200C228F9 /* NewTaskItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTaskItemView.swift; sourceTree = "<group>"; };
+		27E78FFD2B82D0F700C228F9 /* BlankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlankView.swift; sourceTree = "<group>"; };
 		27EC5CFB2B7EB5FA00A38B8B /* TaskGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TaskGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27EC5CFE2B7EB5FA00A38B8B /* TaskGoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskGoApp.swift; sourceTree = "<group>"; };
 		27EC5D002B7EB5FA00A38B8B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -64,6 +68,8 @@
 			children = (
 				27EC5D002B7EB5FA00A38B8B /* ContentView.swift */,
 				27472C1D2B81A1E0009FE5B4 /* BackgroundImageView.swift */,
+				27E78FFB2B82C7E200C228F9 /* NewTaskItemView.swift */,
+				27E78FFD2B82D0F700C228F9 /* BlankView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -218,9 +224,11 @@
 				27472C1E2B81A1E0009FE5B4 /* BackgroundImageView.swift in Sources */,
 				27EC5D082B7EB5FB00A38B8B /* Persistence.swift in Sources */,
 				27472C182B81779F009FE5B4 /* Constant.swift in Sources */,
+				27E78FFE2B82D0F700C228F9 /* BlankView.swift in Sources */,
 				27EC5D012B7EB5FA00A38B8B /* ContentView.swift in Sources */,
 				27EC5CFF2B7EB5FA00A38B8B /* TaskGoApp.swift in Sources */,
 				27472C1C2B8192BD009FE5B4 /* HeightKeyboardEXT.swift in Sources */,
+				27E78FFC2B82C7E200C228F9 /* NewTaskItemView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,10 +11,7 @@ import CoreData
 struct ContentView: View {
     // MARK: - PROPERTIES
     @State var task: String = ""
-    private var isButtonDisabled: Bool {
-        task.isEmpty
-    }
-    
+    @State private var showNewTaskItem: Bool = false
     @Environment(\.managedObjectContext) private var viewContext
     
     @FetchRequest(
@@ -61,34 +58,56 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                // MARK: - MAIN VIEW
                 VStack {
-                    // MARK: - Add Task
-                    VStack(spacing: 16) {
-                        VStack {
-                            TextField("New Task", text: $task)
-                                .padding()
-                                .background(
-                                    Color(UIColor.systemGray5.cgColor)
-                                )
-                            
-                            Button(action: {
-                                addItem()
-                            }, label: {
-                                Spacer()
-                                Text("SAVE")
-                                Spacer()
-                            })
-                            .padding()
-                            .font(.headline)
-                            .foregroundStyle(.white)
-                            .background(
-                                isButtonDisabled ? Color.gray : Color.pink
-                            )
-                            .disabled(isButtonDisabled)
+                    
+                    // MARK: - HEADER
+                    Spacer(minLength: 80)
+                    
+                    // MARK: - NEW TASK BUTTON
+                    Button(action: {
+                        withAnimation {
+                            showNewTaskItem = true
                         }
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                    }
-                    .padding()
+                    }, label: {
+//                        Image(systemName: "plus.circle")
+//                            .font(.system(size: 30, weight: .semibold, design: .rounded))
+//                        Text("New Task")
+//                            .font(.system(size: 24, weight: .bold, design: .rounded))
+                        Label(
+                            title: {
+                                Text("New Task")
+                                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                            },
+                            icon: {
+                                Image(systemName: "plus.circle")
+                                    .font(.system(size: 30, weight: .semibold, design: .rounded))
+                            }
+                        )
+                    })
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 15)
+                    .background(
+                        LinearGradient(
+                            colors: [.pink, .blue],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(.capsule)
+                    .shadow(
+                        color: Color(
+                            red: 0,
+                            green: 0,
+                            blue: 0,
+                            opacity: 0.25
+                        ),
+                        radius: 8,
+                        x: 0.0,
+                        y: 4
+                    )
+                    // MARK: - TASKS
                     
                     // MARK: - List
                     List {
@@ -122,6 +141,18 @@ struct ContentView: View {
                     .padding(.vertical, 0)
                     .frame(maxWidth: 640)
                 } //: VStack
+                
+                // MARK: - NEW TASK ITEM
+                if showNewTaskItem {
+                    BlankView()
+                        .onTapGesture {
+                            withAnimation {
+                                showNewTaskItem = false
+                            }
+                        }
+                    NewTaskItemView(isShowing: $showNewTaskItem)
+                }
+                
             } //: ZStack
             .navigationTitle("Daily Tasks")
             .navigationBarTitleDisplayMode(.large)
