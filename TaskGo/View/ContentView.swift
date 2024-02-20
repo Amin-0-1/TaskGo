@@ -130,15 +130,20 @@ struct ContentView: View, AnyView {
                     .padding(.vertical, 0)
                     .frame(maxWidth: 640)
                 } //: VStack
+                .blur(radius: showNewTaskItem ? 8.0 : 0)
+                .transition(.move(edge: .bottom))
+                .animation(.easeOut(duration: 0.5), value: true)
                 
                 // MARK: - NEW TASK ITEM
                 if showNewTaskItem {
-                    BlankView()
-                        .onTapGesture {
-                            withAnimation {
-                                showNewTaskItem = false
-                            }
+                    BlankView(
+                        backgroundColor: isDarkMode ? .black : .gray,
+                        backgroundOpacity: isDarkMode ? 0.3 : 0.5
+                    ).onTapGesture {
+                        withAnimation {
+                            showNewTaskItem = false
                         }
+                    }
                     NewTaskItemView(isShowing: $showNewTaskItem)
                 }
                 
@@ -146,7 +151,10 @@ struct ContentView: View, AnyView {
             .navigationTitle("Daily Tasks")
             .navigationBarTitleDisplayMode(.large)
             .toolbar(.hidden)
-            .background(BackgroundImageView())
+            .background(
+                BackgroundImageView()
+                    .blur(radius: showNewTaskItem ? 8.0 : 0, opaque: false)
+            )
             .background(backgroundGradient.ignoresSafeArea(.all))
         } //: NavigationView
         .navigationViewStyle(StackNavigationViewStyle())
