@@ -55,6 +55,8 @@ struct ContentView: View, AnyView {
                         Button(action: {
                             withAnimation {
                                 isDarkMode.toggle()
+                                playSound(sound: "sound-tap", type: "mp3")
+                                feedback.notificationOccurred(.success)
                             }
                         }, label: {
                             Image(systemName: isDarkMode ? "moon.circle.fill" : "moon.circle")
@@ -72,6 +74,8 @@ struct ContentView: View, AnyView {
                     Button(action: {
                         withAnimation {
                             showNewTaskItem = true
+                            playSound(sound: "sound-ding", type: "mp3")
+                            feedback.notificationOccurred(.success)
                         }
                     }, label: {
                         Label(

@@ -11,7 +11,7 @@ struct ListRowItemView: View {
     // MARK: - PROPERTIES
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var item: Item
-
+    
     var body: some View {
         Toggle(isOn: $item.completion) {
             Text(item.task ?? "")
