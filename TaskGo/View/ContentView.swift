@@ -55,6 +55,8 @@ struct ContentView: View, AnyView {
                         Button(action: {
                             withAnimation {
                                 isDarkMode.toggle()
+                                playSound(sound: "sound-tap", type: "mp3")
+                                feedback.notificationOccurred(.success)
                             }
                         }, label: {
                             Image(systemName: isDarkMode ? "moon.circle.fill" : "moon.circle")
@@ -72,6 +74,8 @@ struct ContentView: View, AnyView {
                     Button(action: {
                         withAnimation {
                             showNewTaskItem = true
+                            playSound(sound: "sound-ding", type: "mp3")
+                            feedback.notificationOccurred(.success)
                         }
                     }, label: {
                         Label(
@@ -110,16 +114,7 @@ struct ContentView: View, AnyView {
                     // MARK: - TASKS
                     List {
                         ForEach(items) { item in
-                            NavigationLink(destination: Text("Item at \(item.timestamp!, formatter: itemFormatter)")) {
-                                VStack(alignment: .leading) {
-                                    Text(item.task ?? "")
-                                        .font(.headline)
-                                        .fontWeight(.bold)
-                                    Text(item.timestamp!, formatter: itemFormatter)
-                                        .font(.footnote)
-                                        .foregroundStyle(.gray)
-                                }
-                            }
+                            ListRowItemView(item: item)
                         }
                         .onDelete(perform: deleteItems)
                     } //: List
@@ -139,15 +134,20 @@ struct ContentView: View, AnyView {
                     .padding(.vertical, 0)
                     .frame(maxWidth: 640)
                 } //: VStack
+                .blur(radius: showNewTaskItem ? 8.0 : 0)
+                .transition(.move(edge: .bottom))
+                .animation(.easeOut(duration: 0.5), value: true)
                 
                 // MARK: - NEW TASK ITEM
                 if showNewTaskItem {
-                    BlankView()
-                        .onTapGesture {
-                            withAnimation {
-                                showNewTaskItem = false
-                            }
+                    BlankView(
+                        backgroundColor: isDarkMode ? .black : .gray,
+                        backgroundOpacity: isDarkMode ? 0.3 : 0.5
+                    ).onTapGesture {
+                        withAnimation {
+                            showNewTaskItem = false
                         }
+                    }
                     NewTaskItemView(isShowing: $showNewTaskItem)
                 }
                 
@@ -155,7 +155,10 @@ struct ContentView: View, AnyView {
             .navigationTitle("Daily Tasks")
             .navigationBarTitleDisplayMode(.large)
             .toolbar(.hidden)
-            .background(BackgroundImageView())
+            .background(
+                BackgroundImageView()
+                    .blur(radius: showNewTaskItem ? 8.0 : 0, opaque: false)
+            )
             .background(backgroundGradient.ignoresSafeArea(.all))
         } //: NavigationView
         .navigationViewStyle(StackNavigationViewStyle())

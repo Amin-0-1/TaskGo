@@ -55,6 +55,7 @@ struct NewTaskItemView: View, AnyView {
                 
                 Button(action: {
                     addItem()
+                    playSound(sound: "sound-ding", type: "mp3")
                 }, label: {
                     Spacer()
                     Text("SAVE")
@@ -67,6 +68,12 @@ struct NewTaskItemView: View, AnyView {
                     isButtonDisabled ? Color.blue : Color.pink
                 )
                 .disabled(isButtonDisabled)
+                .onTapGesture {
+                    if isButtonDisabled {
+                        playSound(sound: "sound-tap", type: "mp3")
+                        feedback.notificationOccurred(.success)
+                    }
+                }
             }
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal)
